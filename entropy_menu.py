@@ -1,42 +1,25 @@
-import argparse
-from entropy_calculator import calculate_alphabet_power, calculate_hartley_entropy, calculate_shannon_entropy, calculate_redundancy
+import os
+from entropy_calculator import main as calculate_entropy
 
 def main():
-    parser = argparse.ArgumentParser(description="Entropy Calculator CLI")
-    parser.add_argument("filename", help="Name of the text file")
-    args = parser.parse_args()
-
     while True:
-        print("\nEntropy Calculator Menu:")
-        print("1. Calculate Entropy")
-        print("2. Exit")
+        print("Выберите действие:")
+        print("1. Выбрать файл")
+        print("2. Выход")
 
-        choice = input("Enter your choice (1 or 2): ")
+        choice = input("Введите номер действия: ")
 
         if choice == "1":
-            try:
-                with open(args.filename, "r", encoding="utf-8") as file:
-                    text = file.read()
-            except FileNotFoundError:
-                print(f"Error: File '{args.filename}' not found.")
-                continue
-
-            alphabet_power = calculate_alphabet_power(text)
-            hartley_entropy = calculate_hartley_entropy(alphabet_power)
-            shannon_entropy = calculate_shannon_entropy(text)
-            redundancy = calculate_redundancy(alphabet_power, shannon_entropy)
-
-            print(f"\nAlphabet Power: {alphabet_power}")
-            print(f"Hartley Entropy: {hartley_entropy}")
-            print(f"Shannon Entropy: {shannon_entropy}")
-            print(f"Redundancy: {redundancy:.2f}%")
-
+            filename = input("Введите название файла: ")
+            if os.path.exists(filename):
+                calculate_entropy(filename)
+            else:
+                print("Файл не найден.")
         elif choice == "2":
-            print("Exiting the program.")
-            break
-
+            print("Выход из программы.")
+            break  # Завершаем цикл, если выбран второй пункт
         else:
-            print("Invalid choice. Please enter 1 or 2.")
+            print("Некорректный выбор. Пожалуйста, выберите 1 или 2.")
 
 if __name__ == "__main__":
     main()
