@@ -28,4 +28,4 @@ def main(filename):
     print(f"Alphabet Redundancy: {redundancy:.2f}%")
 
 if __name__ == "__main__":
-    main("input.txt")  # Здесь файл можно изменить на ввод пользователя
+    main("input.txt")  
