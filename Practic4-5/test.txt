@@ -1,3 +1,0 @@
-This is a sample text for Huffman coding generator.
-1231 
-aaddasdadsada

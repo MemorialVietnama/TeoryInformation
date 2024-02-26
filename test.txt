@@ -1,0 +1,5 @@
+This is a sample text for Huffman coding generator.
+1231 
+aaddasdadsada
+
+python /home/vladislav/ThepryInformation/TeoryInformation/Practic4-5/haffman_menu.py /home/vladislav/ThepryInformation/TeoryInformation/Practic4-5/test.txt
