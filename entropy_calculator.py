@@ -1,3 +1,4 @@
+#entropy_calculator.py
 import math
 
 def calculate_alphabet_size(text):
@@ -13,7 +14,7 @@ def calculate_shannon_entropy(text):
 def calculate_alphabet_redundancy(hartley_entropy, shannon_entropy):
     return hartley_entropy - shannon_entropy / hartley_entropy * 100
 
-def main(filename):
+def calculate_entropy(filename):
     with open(filename, 'r', encoding='utf-8') as file:
         text = file.read()
 
@@ -22,10 +23,4 @@ def main(filename):
     shannon_entropy = calculate_shannon_entropy(text)
     redundancy = calculate_alphabet_redundancy(hartley_entropy, shannon_entropy)
 
-    print(f"Alphabet Size: {alphabet_size}")
-    print(f"Hartley Entropy: {hartley_entropy}")
-    print(f"Shannon Entropy: {shannon_entropy}")
-    print(f"Alphabet Redundancy: {redundancy:.2f}%")
-
-if __name__ == "__main__":
-    main("input.txt")  
+    return alphabet_size, hartley_entropy, shannon_entropy, redundancy
