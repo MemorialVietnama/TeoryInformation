@@ -1,7 +1,8 @@
 # morse_code_program.py
 
-from morse_encoder import text_to_morse, encode_input
-from morse_decoder import morse_to_text, decode_input
+import os
+from morse_decoder_encoder import text_to_morse, morse_to_text
+
 
 def main():
     while True:
@@ -12,8 +13,46 @@ def main():
 
         choice = input("Введите номер действия: ")
 
+        if not choice.strip():  # Check if the input is empty or contains only spaces
+            print("Ошибка: Некорректный ввод. Пожалуйста, введите 1, 2 или 3.")
+            continue
+
         if choice == '1':
-            text_input = encode_input()
+            print("Выберите источник данных:")
+            print("1 - Ввод вручную")
+            print("2 - Загрузка из файла")
+    
+            choice_source = input("Введите номер источника: ")
+    
+            if not choice_source.strip():
+                print("Ошибка: Некорректный ввод. Пожалуйста, введите 1 или 2.")
+                continue
+
+            if choice_source == '1':
+                text_input = input("Введите текст для кодирования: ")
+                
+                if not text_input.strip():
+                    print("Ошибка: Нету текста. Пожалуйста, введите текст для кодирования.")
+                    continue
+
+            elif choice_source == '2':
+                filename = input("Введите имя файла для загрузки: ")
+                filepath = os.path.join(os.getcwd(), filename)  # Полный путь к файлу
+                try:
+                    with open(filepath, 'r') as file:
+                        text_input = file.read()
+                        
+                    if not text_input.strip():
+                        print("Ошибка: Нету текста в файле. Пожалуйста, введите текст для кодирования.")
+                        continue
+                        
+                except FileNotFoundError:
+                    print(f"Файл {filename} не найден.")
+                    continue
+            else:
+                print("Некорректный выбор. Пожалуйста, введите 1 или 2.")
+                continue
+
             morse_code = text_to_morse(text_input)
             print("Результат кодирования: ", morse_code)
 
@@ -24,7 +63,41 @@ def main():
                     file.write(morse_code)
 
         elif choice == '2':
-            morse_input = decode_input()
+            print("Выберите источник данных:")
+            print("1 - Ввод вручную")
+            print("2 - Загрузка из файла")
+    
+            choice_source = input("Введите номер источника: ")
+    
+            if not choice_source.strip():
+                print("Ошибка: Некорректный ввод. Пожалуйста, введите 1 или 2.")
+                continue
+
+            if choice_source == '1':
+                morse_input = input("Введите азбуку Морзе для декодирования: ")
+                
+                if not morse_input.strip():
+                    print("Ошибка: Нету текста. Пожалуйста, введите азбуку Морзе для декодирования.")
+                    continue
+
+            elif choice_source == '2':
+                filename = input("Введите имя файла для загрузки: ")
+                filepath = os.path.join(os.getcwd(), filename)  # Полный путь к файлу
+                try:
+                    with open(filepath, 'r') as file:
+                        morse_input = file.read()
+                        
+                    if not morse_input.strip():
+                        print("Ошибка: Нету текста в файле. Пожалуйста, введите азбуку Морзе для декодирования.")
+                        continue
+                        
+                except FileNotFoundError:
+                    print(f"Файл {filename} не найден.")
+                    continue
+            else:
+                print("Некорректный выбор. Пожалуйста, введите 1 или 2.")
+                continue
+
             text = morse_to_text(morse_input)
             print("Результат декодирования: ", text)
 
