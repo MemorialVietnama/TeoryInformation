@@ -13,7 +13,7 @@ def main():
 
         choice = input("Введите номер действия: ")
 
-        if not choice.strip():  # Check if the input is empty or contains only spaces
+        if not choice.strip():  
             print("Ошибка: Некорректный ввод. Пожалуйста, введите 1, 2 или 3.")
             continue
 

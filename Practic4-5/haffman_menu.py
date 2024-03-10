@@ -13,7 +13,6 @@ def get_input_file():
 
     if not files_in_current_dir:
         raise FileNotFoundError("В текущей директории нет файлов.")
-
     print("Доступные файлы:")
     for i, file in enumerate(files_in_current_dir, start=1):
         print(f"{i}. {file}")
@@ -29,17 +28,32 @@ def get_input_file():
             print("Некорректный ввод. Введите номер файла.")
 
 def main():
-    input_file = get_input_file()
+    while True:
+      print("Генератор Кода Хаффмана, выберите условия контекстного меню:")
+      print("1. Выбрать файл")
+      print("2. Выход из программы")
+      choice = input("Введите номер действия: ")
 
-    cgen = CodeGenerator()
-    code_folder = create_code_folder()
-    code_file_path = os.path.join(code_folder, "code.json")
+      if not choice.strip():  
+            print("Ошибка: Некорректный ввод. Пожалуйста, введите 1, 2.")
+            continue
 
-    try:
-        cgen.gen_code(input_file, code_file_path)
-        print(f"Код Хаффмана сохранен. Код сохранен в файле: {code_file_path}")
-    except Exception as e:
-        print(f"Ошибка: {e}")
+      if choice == "1":
+            input_file = get_input_file()
+            cgen = CodeGenerator()
+            code_folder = create_code_folder()
+            code_file_path = os.path.join(code_folder, "code.json")
+
+            try:
+                cgen.gen_code(input_file, code_file_path)
+                print(f"Код Хаффмана сохранен. Код сохранен в файле: {code_file_path}")
+            except Exception as e:
+                print(f"Ошибка: {e}")
+      elif choice == "2":
+            print("Выход из программы")
+            break
+      else:
+            print("Некорректный выбор. Пожалуйста, введите номер из списка.")
 
 if __name__ == "__main__":
     main()
