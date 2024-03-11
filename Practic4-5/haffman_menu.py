@@ -94,6 +94,15 @@ def decode_file():
         print(f"Энтропия раскодированного текстового файла: {entropy}")
         print(f"Среднее количество бит на символ в раскодированном файле: {average_bits_per_symbol}")
         print(f"Степень сжатия: {compression_ratio}")
+        comparison_results = f"\n\nСравнение результатов:\n" \
+                             f"Размер закодированного файла: {input_file_size} байт\n" \
+                             f"Размер раскодированного файла: {decoded_file_size} байт\n" \
+                             f"Энтропия раскодированного текстового файла: {entropy}\n" \
+                             f"Среднее количество бит на символ в раскодированном файле: {average_bits_per_symbol}\n" \
+                             f"Степень сжатия: {compression_ratio}\n"
+
+        with open(output_file_path, "a", encoding="utf-8") as file:
+            file.write(comparison_results)
     except Exception as e:
         print(f"Ошибка при раскодировании: {e}")
 
