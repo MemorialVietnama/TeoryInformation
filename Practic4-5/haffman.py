@@ -70,8 +70,12 @@ class CodeGenerator:
         root = self._build_tree(heap)
         self._generate_codes(root)
 
+        binary_codes = {char: self.codes[char] for char in text}
+
+        encoded_text = ''.join(binary_codes[char] for char in text)
+
         with open(output_file_path, "w", encoding="utf-8") as file:
-            json.dump({"codes": self.codes, "text": text}, file, ensure_ascii=False, indent=2)
+            json.dump({"codes": self.codes, "binary_text": encoded_text}, file, ensure_ascii=False, indent=2)
 
     def decode_text(self, encoded_text):
         decoded_text = ""

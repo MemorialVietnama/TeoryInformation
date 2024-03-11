@@ -1,4 +1,5 @@
 # huffman_menu.py
+
 import os
 import json
 from datetime import datetime
@@ -40,7 +41,7 @@ def encode_file():
 
         with open(code_file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
-            encoded_text = cgen.encode_text(data["text"])
+            encoded_text = data["binary_text"]
 
         print(f"Закодированный текст: {encoded_text}")
 
@@ -49,22 +50,24 @@ def encode_file():
 
 def decode_file():
     try:
-        code_file = input("Введите путь к закодированному JSON файлу: ")
-        output_file = input("Введите путь к файлу для сохранения раскодированного текста: ")
+        code_file_path = input("Введите путь к закодированному JSON файлу: ")
+        output_folder = os.path.dirname(code_file_path)
 
-        with open(code_file, "r", encoding="utf-8") as file:
-            codes = json.load(file)
-
-        encoded_text = input("Введите закодированный текст: ")
+        with open(code_file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+            encoded_text = data["binary_text"]
+            codes = data["codes"]
 
         cgen = CodeGenerator()
-        decoded_text = cgen.decode_text(encoded_text)
+        cgen.codes = codes  # Используем переданный массив кодов для декодирования
+        decoder_text = cgen.decode_text(encoded_text)
 
-        with open(output_file, "w", encoding="utf-8") as file:
-            file.write(decoded_text)
+        output_file_path = os.path.join(output_folder, "decoded_text.txt")
+        with open(output_file_path, "w", encoding="utf-8") as file:
+            file.write(decoder_text)
 
-        print(f"Файл успешно раскодирован. Результат сохранен в файле: {output_file}")
-
+        print(f"Файл успешно раскодирован. Результат сохранен в файле: {output_file_path}")
+        print(f"Декодированный текст:  {decoder_text} ")
     except Exception as e:
         print(f"Ошибка при раскодировании: {e}")
 
