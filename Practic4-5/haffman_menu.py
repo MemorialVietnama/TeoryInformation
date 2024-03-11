@@ -36,8 +36,14 @@ def encode_file():
 
     try:
         cgen.gen_code(input_file, code_file_path)
-        cgen.print_codes()  # Выводим коды на экран
         print(f"Код Хаффмана сохранен. Код сохранен в файле: {code_file_path}")
+
+        with open(code_file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+            encoded_text = cgen.encode_text(data["text"])
+
+        print(f"Закодированный текст: {encoded_text}")
+
     except Exception as e:
         print(f"Ошибка: {e}")
 
@@ -52,7 +58,7 @@ def decode_file():
         encoded_text = input("Введите закодированный текст: ")
 
         cgen = CodeGenerator()
-        decoded_text = cgen.decode_text(encoded_text, codes)
+        decoded_text = cgen.decode_text(encoded_text)
 
         with open(output_file, "w", encoding="utf-8") as file:
             file.write(decoded_text)

@@ -18,13 +18,17 @@ class Node:
 class CodeGenerator:
     def __init__(self):
         self.codes = {}
-
+    def encode_text(self, text):
+        encoded_text = ""
+        for char in text:
+            encoded_text += self.codes[char]
+        return encoded_text
     def print_codes(self):
-        encrypted_string = ""
+        encrypted_sentence = ""
         for symbol, code in self.codes.items():
             print(f"Шифровка: {code} {symbol if symbol.isalpha() else ''}")
-            encrypted_string += code
-        print(f"Шифрованное слово: {encrypted_string}")
+            encrypted_sentence += code
+        print(f"Шифрованное предложение: {encrypted_sentence}")
 
     def _build_heap(self, text):
         frequencies = Counter(text)
@@ -36,8 +40,8 @@ class CodeGenerator:
         decoded_text = self.decode_text(encoded_text)
         with open(output_file_path, "w", encoding="utf-8") as file:
             file.write(decoded_text)
-
     def _build_tree(self, heap):
+        heapify(heap)
         while len(heap) > 1:
             left = heappop(heap)
             right = heappop(heap)
@@ -67,12 +71,12 @@ class CodeGenerator:
         self._generate_codes(root)
 
         with open(output_file_path, "w", encoding="utf-8") as file:
-            json.dump(self.codes, file, ensure_ascii=False, indent=2)
+            json.dump({"codes": self.codes, "text": text}, file, ensure_ascii=False, indent=2)
 
-    def decode_text(self, encoded_text, codes):
+    def decode_text(self, encoded_text):
         decoded_text = ""
         current_code = ""
-        reverse_codes = {code: symbol for symbol, code in codes.items()}
+        reverse_codes = {code: symbol for symbol, code in self.codes.items()}
 
         for bit in encoded_text:
             current_code += bit
