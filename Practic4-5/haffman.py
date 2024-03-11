@@ -1,7 +1,7 @@
+# huffman.py
 import json
 from collections import Counter
 from heapq import heapify, heappush, heappop
-from datetime import datetime
 
 class Node:
     def __init__(self, symbol=None, frequency=None):
@@ -15,16 +15,27 @@ class Node:
             return NotImplemented
         return self.frequency < other.frequency
 
-
 class CodeGenerator:
     def __init__(self):
         self.codes = {}
+
+    def print_codes(self):
+        encrypted_string = ""
+        for symbol, code in self.codes.items():
+            print(f"Шифровка: {code} {symbol if symbol.isalpha() else ''}")
+            encrypted_string += code
+        print(f"Шифрованное слово: {encrypted_string}")
 
     def _build_heap(self, text):
         frequencies = Counter(text)
         heap = [Node(symbol=s, frequency=f) for s, f in frequencies.items()]
         heapify(heap)
         return heap
+
+    def decode_file(self, encoded_text, output_file_path):
+        decoded_text = self.decode_text(encoded_text)
+        with open(output_file_path, "w", encoding="utf-8") as file:
+            file.write(decoded_text)
 
     def _build_tree(self, heap):
         while len(heap) > 1:
@@ -58,6 +69,15 @@ class CodeGenerator:
         with open(output_file_path, "w", encoding="utf-8") as file:
             json.dump(self.codes, file, ensure_ascii=False, indent=2)
 
-if __name__ == "__main__":
-    cgen = CodeGenerator()
-    cgen.gen_code("test.txt", "code.json")
+    def decode_text(self, encoded_text, codes):
+        decoded_text = ""
+        current_code = ""
+        reverse_codes = {code: symbol for symbol, code in codes.items()}
+
+        for bit in encoded_text:
+            current_code += bit
+            if current_code in reverse_codes:
+                decoded_text += reverse_codes[current_code]
+                current_code = ""
+
+        return decoded_text
