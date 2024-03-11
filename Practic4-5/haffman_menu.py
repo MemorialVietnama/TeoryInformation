@@ -3,7 +3,7 @@
 import os
 import json
 from datetime import datetime
-from haffman import CodeGenerator
+from haffman import CodeGenerator, calculate_entropy
 
 def create_code_folder():
     folder_name = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
@@ -44,6 +44,19 @@ def encode_file():
             encoded_text = data["binary_text"]
 
         print(f"Закодированный текст: {encoded_text}")
+ # Calculate file sizes, entropy, etc.
+        input_file_size = os.path.getsize(input_file)
+        encoded_file_size = os.path.getsize(code_file_path)
+
+        entropy = calculate_entropy(input_file)
+        average_bits_per_symbol = encoded_file_size * 8 / len(encoded_text)
+        compression_ratio = input_file_size / encoded_file_size
+
+        print(f"Размер исходного файла: {input_file_size} байт")
+        print(f"Размер закодированного файла: {encoded_file_size} байт")
+        print(f"Энтропия исходного текстового файла: {entropy}")
+        print(f"Среднее количество бит на символ в закодированном файле: {average_bits_per_symbol}")
+        print(f"Степень сжатия: {compression_ratio}")
 
     except Exception as e:
         print(f"Ошибка: {e}")
@@ -68,6 +81,19 @@ def decode_file():
 
         print(f"Файл успешно раскодирован. Результат сохранен в файле: {output_file_path}")
         print(f"Декодированный текст:  {decoder_text} ")
+         # Calculate file sizes, entropy, etc.
+        input_file_size = os.path.getsize(code_file_path)
+        decoded_file_size = os.path.getsize(output_file_path)
+
+        entropy = calculate_entropy(output_file_path)
+        average_bits_per_symbol = input_file_size * 8 / len(encoded_text)
+        compression_ratio = decoded_file_size / input_file_size
+
+        print(f"Размер закодированного файла: {input_file_size} байт")
+        print(f"Размер раскодированного файла: {decoded_file_size} байт")
+        print(f"Энтропия раскодированного текстового файла: {entropy}")
+        print(f"Среднее количество бит на символ в раскодированном файле: {average_bits_per_symbol}")
+        print(f"Степень сжатия: {compression_ratio}")
     except Exception as e:
         print(f"Ошибка при раскодировании: {e}")
 

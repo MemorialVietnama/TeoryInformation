@@ -2,7 +2,18 @@
 import json
 from collections import Counter
 from heapq import heapify, heappush, heappop
+import math
 
+def calculate_entropy(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        text = file.read()
+
+    total_chars = len(text)
+    char_frequencies = {char: text.count(char) for char in set(text)}
+    probabilities = [freq / total_chars for freq in char_frequencies.values()]
+
+    entropy = -sum(p * math.log2(p) for p in probabilities if p > 0)
+    return entropy
 class Node:
     def __init__(self, symbol=None, frequency=None):
         self.symbol = symbol
