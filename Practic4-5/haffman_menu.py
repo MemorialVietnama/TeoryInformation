@@ -6,11 +6,13 @@ from datetime import datetime
 from haffman import CodeGenerator, calculate_entropy
 
 def create_code_folder():
+    # Создает уникальную директорию на основе текущей даты и времени
     folder_name = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     os.makedirs(folder_name)
     return folder_name
 
 def get_input_file():
+    # Получает список файлов в текущей директории и позволяет пользователю выбрать файл
     files_in_current_dir = [f for f in os.listdir('.') if os.path.isfile(f)]
 
     if not files_in_current_dir:
@@ -30,21 +32,25 @@ def get_input_file():
             print("Некорректный ввод. Введите номер файла.")
 
 def encode_file():
+    # Закодирует выбранный файл с использованием кода Хаффмана
     input_file = get_input_file()
     cgen = CodeGenerator()
     code_folder = create_code_folder()
     code_file_path = os.path.join(code_folder, "code.json")
 
     try:
+        # Создает код Хаффмана для выбранного файла и сохраняет его
         cgen.gen_code(input_file, code_file_path)
         print(f"Код Хаффмана сохранен. Код сохранен в файле: {code_file_path}")
 
+        # Загружает закодированный текст из файла
         with open(code_file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
             encoded_text = data["binary_text"]
 
         print(f"Закодированный текст: {encoded_text}")
- # Calculate file sizes, entropy, etc.
+        
+        # Вычисляет размеры файлов, энтропию, среднее количество бит на символ и степень сжатия
         input_file_size = os.path.getsize(input_file)
         encoded_file_size = os.path.getsize(code_file_path)
 
@@ -63,6 +69,7 @@ def encode_file():
 
 def decode_file():
     try:
+        # Раскодирует выбранный файл, используя код Хаффмана
         code_file_path = input("Введите путь к закодированному JSON файлу: ")
         output_folder = os.path.dirname(code_file_path)
 
@@ -81,7 +88,8 @@ def decode_file():
 
         print(f"Файл успешно раскодирован. Результат сохранен в файле: {output_file_path}")
         print(f"Декодированный текст:  {decoder_text} ")
-         # Calculate file sizes, entropy, etc.
+
+        # Вычисляет размеры файлов, энтропию, среднее количество бит на символ и степень сжатия
         input_file_size = os.path.getsize(code_file_path)
         decoded_file_size = os.path.getsize(output_file_path)
 
@@ -94,6 +102,8 @@ def decode_file():
         print(f"Энтропия раскодированного текстового файла: {entropy}")
         print(f"Среднее количество бит на символ в раскодированном файле: {average_bits_per_symbol}")
         print(f"Степень сжатия: {compression_ratio}")
+        
+        # Добавляет результаты сравнения в файл "decoded_text.txt"
         comparison_results = f"\n\nСравнение результатов:\n" \
                              f"Размер закодированного файла: {input_file_size} байт\n" \
                              f"Размер раскодированного файла: {decoded_file_size} байт\n" \
@@ -103,10 +113,12 @@ def decode_file():
 
         with open(output_file_path, "a", encoding="utf-8") as file:
             file.write(comparison_results)
+
     except Exception as e:
         print(f"Ошибка при раскодировании: {e}")
 
 def main():
+    # Основной цикл программы, предоставляющий пользователю меню
     while True:
         print("Генератор Кода Хаффмана, выберите условия контекстного меню:")
         print("1. Закодировать по шифровке Хаффмана")
