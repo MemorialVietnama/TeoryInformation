@@ -62,7 +62,7 @@ def encode_file():
         print(f"Размер закодированного файла: {encoded_file_size} байт")
         print(f"Энтропия исходного текстового файла: {entropy}")
         print(f"Среднее количество бит на символ в закодированном файле: {average_bits_per_symbol}")
-        print(f"Степень сжатия: {compression_ratio}")
+        print(f"Степень сжатия: {compression_ratio:.2f}%")
 
     except Exception as e:
         print(f"Ошибка: {e}")
@@ -101,7 +101,7 @@ def decode_file():
         print(f"Размер раскодированного файла: {decoded_file_size} байт")
         print(f"Энтропия раскодированного текстового файла: {entropy}")
         print(f"Среднее количество бит на символ в раскодированном файле: {average_bits_per_symbol}")
-        print(f"Степень сжатия: {compression_ratio}")
+        print(f"Степень сжатия: {compression_ratio:.2f}%")
         
         # Добавляет результаты сравнения в файл "decoded_text.txt"
         comparison_results = f"\n\nСравнение результатов:\n" \
@@ -109,7 +109,7 @@ def decode_file():
                              f"Размер раскодированного файла: {decoded_file_size} байт\n" \
                              f"Энтропия раскодированного текстового файла: {entropy}\n" \
                              f"Среднее количество бит на символ в раскодированном файле: {average_bits_per_symbol}\n" \
-                             f"Степень сжатия: {compression_ratio}\n"
+                             f"Степень сжатия: {compression_ratio:.2f}%\n"
 
         with open(output_file_path, "a", encoding="utf-8") as file:
             file.write(comparison_results)
