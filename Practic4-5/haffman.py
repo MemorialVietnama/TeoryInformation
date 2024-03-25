@@ -1,5 +1,3 @@
-# huffman.py
-
 import json
 from collections import Counter
 from heapq import heapify, heappush, heappop
@@ -11,10 +9,9 @@ def calculate_entropy(file_path):
         text = file.read()
 
     total_chars = len(text)
-    char_frequencies = {char: text.count(char) for char in set(text)}
-    probabilities = [freq / total_chars for freq in char_frequencies.values()]
-
-    entropy = -sum(p * math.log2(p) for p in probabilities if p > 0)
+    char_frequencies = {char: text.count(char) for char in set(text)}  # Создание словаря частот символов
+    probabilities = [freq / total_chars for freq in char_frequencies.values()]  # Рассчет вероятностей
+    entropy = -sum(p * math.log2(p) for p in probabilities if p > 0)  # Рассчет энтропии
     return entropy
 
 class Node:
