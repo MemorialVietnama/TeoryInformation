@@ -1,46 +1,34 @@
-from auth import authenticate_user
-from admin import admin_menu
-from user import user_menu, register_user
+from database import *
+from func import *
 
-def is_admin(login):
-    # Предположим, что здесь будет код, который проверяет, является ли пользователь администратором
-    return login == "admin"
+database_name = "base2.db"
+connection, cursor = connect_to_database(database_name)
 
-def is_registered_user(login, users):
-    # Предположим, что здесь будет код, который проверяет, является ли пользователь зарегистрированным пользователем
-    return login in users
-
-def main():
-    users = {}
-
+if connection:
     while True:
-        print("\nГлавное меню:")
-        print("1. Войти")
-        print("2. Зарегистрироваться")
-        print("3. Выход")
+            print("\nГлавное меню:")
+            print("1. Войти")
+            print("2. Зарегистрироваться")
+            print("3. Идентификация по логину")
+            print("4. Выход")
 
-        choice = input("Выберите действие: ")
+            choice = input("Выберите действие: ")
 
-        if choice == "1":
-            login = input("Введите логин: ")
-            password = input("Введите пароль: ")
-            if authenticate_user(login, password, users):
-                print("Вы авторизованы")
-                if is_admin(login):
-                    admin_menu(users)
-                elif is_registered_user(login, users):
-                    user_menu(users)
+            if choice == "1":
+                authenticate_user(connection, cursor)
+            elif choice == "2":
+                register_user(connection, cursor)
+            elif choice == "3":
+                if identify_by_login(connection, cursor):
+                    print("Пользователь с таким логином существует")
                 else:
-                    print("Пользователь не определен")
+                    print("Пользователь с таким логином не существует")
+            elif choice == "4":
+                print("Выход из программы")
+                break
             else:
-                print("Неправильный логин или пароль")
-        elif choice == "2":
-            register_user(users)
-        elif choice == "3":
-            print("Выход из программы")
-            break
-        else:
-            print("Некорректный ввод")
+                print("Некорректный ввод")
 
-if __name__ == "__main__":
-    main()
+    connection.close()
+    print("Соединение с базой данных закрыто")
+
