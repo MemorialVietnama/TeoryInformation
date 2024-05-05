@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кодирование Хемминга</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+    a {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    a:hover {
+      background-color: #0069d9;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Кодирование Хемминга</h1>
+    <h2>Результат = {{data}}</h2>
+    <button id="copyButton">Скопировать результат</button> <!-- Добавлена кнопка -->
+    <a href="/">На главную</a>
+  </div>
+
+  <script>
+    // Функция для копирования текста в буфер обмена
+    function copyTextToClipboard(text) {
+      const textField = document.createElement('textarea');
+      textField.innerText = text;
+      document.body.appendChild(textField);
+      textField.select();
+      document.execCommand('copy');
+      textField.remove();
+    }
+
+    // Обработчик нажатия кнопки "Скопировать результат"
+    document.getElementById('copyButton').addEventListener('click', function() {
+      const resultText = document.querySelector('h2').innerText; // Получаем текст результата
+      copyTextToClipboard(resultText); // Копируем текст в буфер обмена
+      alert('Результат скопирован!');
+    });
+  </script>
+</body>
+</html>
