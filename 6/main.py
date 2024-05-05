@@ -1,104 +1,67 @@
 import sys
-import os
-import configparser
-from code_generator import CodeGenerator
-from hamming_coding import HammingCoding
-
+from haff_hem import *
+from logger import log_user_action, save_log_to_file
 from read_setting import read_word_size
 
-def huffman_menu():
-    print("Алгоритм Хаффмана:")
-    print("1. Закодировать по Хаффману")
-    print("2. Вернуться в главное меню")
-    choice = input("Введите номер действия: ")
-    return choice
-
-def hamming_menu():
-    print("Алгоритм Хемминга:")
-    print("1. Закодировать bitarray по Хеммингу")
-    print("2. Декодировать bitarray по Хеммингу")
-    print("3. Вернутся в главное меню")
-    choice = input("Введите номер действия: ")
-    return choice
-
-def hamming_errors_menu():
-    print("Ошибки в Хемминге:")
-    print("1. Внести ошибки в результат кодировки Хемминга")
-    print("2. Исправить ошибки в ошибочном коде Хемминга")
-    print("3. Вернутся в главное меню")
-    choice = input("Введите номер действия: ")
-    return choice
-
-
-
 def main():
-
-    filename = 'settings.ini'  # Укажите имя вашего файла
-    rword_size = read_word_size(filename)
-
-    if rword_size is not None:
-        print("Значение переменной word_size:", rword_size)
-    else:
-        print("Не удалось получить значение переменной word_size.")
-
     while True:
-        print("\nГлавное меню:")
-        print("1. Алгоритм Хаффмана")
-        print("2. Алгоритм Хемминга")
-        print("3. Ошибки в Хемминге")
-        print("4. Вывод файла Log")
-        print("5. Выход из программы")
+        log_user_action("Программа запущена.")
+        filename = 'settings.ini' 
+        rword_size = read_word_size(filename)
 
-        choice = input("Введите номер действия: ")
+        if rword_size is not None:
+            print("Значение переменной word_size:", rword_size)
+        else:
+            print("Не удалось получить значение переменной word_size.")
 
-        if choice == '1':
-            huffman_choice = huffman_menu()
-            if huffman_choice == '1':
-                text = input("Введите текст для кодировки по Хаффману: ")
-                code_generator = CodeGenerator()  # Instantiate CodeGenerator here
-                result = code_generator.gen_code(text)
-                print("Код Хаффмана сгенерирован.")
-                print("Закодированный текст:", result["binary_text"])
-                print("Соответствующие коды:", result["codes"])
-            elif huffman_choice == '2':
-                continue
-            else:
-                print("Некорректный выбор. Пожалуйста, выберите существующий пункт.")
+        print("\nПредварительное меню:")
+        print("1. Начать")
+        print("2. Выйти из программы")
 
-        elif choice == '2':
-            hamming_choice = hamming_menu()
-            if hamming_choice == '1':
-                text_hem = input("Введите текст для кодировки Хемминга: ")
-                hamming_coder = HammingCoding(rword_size)
-                encoded_text = hamming_coder.encode(text_hem, rword_size)
-                print("Закодированный текст по Хеммингу:", encoded_text)
-                pass
-            elif hamming_choice == '2':
-                pre_text = input("Введите закодированный текст: ")
-                decoded_text = hamming_coder.decode(pre_text, rword_size)
-                print("Декодированный текст по Хеммингу:", decoded_text)
-            elif hamming_choice == '3':
-                continue
-            else:
-                print("Некорректный выбор. Пожалуйста, выберите существующий пункт.")
-        elif choice == '3':
-            hamming_errors_choice = hamming_errors_menu()
-            if hamming_errors_choice == '1':
-                # Реализация внесения ошибок в код Хемминга
-                pass
-            elif hamming_errors_choice == '2':
-                # Реализация исправления ошибок в коде Хемминга
-                pass
-            else:
-                print("Некорректный выбор. Пожалуйста, выберите существующий пункт.")
-        elif choice == '4':
-            # Реализация вывода файла Log
-            pass
-        elif choice == '5':
+        pre_choice = input("Выберите действие: ")
+        if pre_choice == '1':
+            text = input("Введите текст для кодировки в Юникод: ")
+            log_user_action("Получен текст для кодировки в Юникод: ")
+            unicode_text = text_to_unicode(text)
+            print("Текст в Юникод:", unicode_text)
+
+            codes = Haffman(text).get_codes()
+            log_user_action("Коды Хаффмана успешно сгенерированы.")
+            crypted = crypt(codes, text)
+            print("Код Хаффмана: ", crypted)
+
+            hem = Heming()
+            crypted_hem = hem.code(crypted, True)  # Encoding with Hamming
+            log_user_action("Текст успешно закодирован с помощью Хемминга.")
+            print("Код Хемминга: ", crypted_hem)
+
+            noised = hem.noise(crypted_hem, 2)  # Introducing noise
+            log_user_action("Код Хемминга успешно подвергнут воздействию шума.")
+            print("Код Хемминга с добавленными ошибками: ", noised)
+
+            encrypted = hem.code(noised, False)  # Decoding Hamming
+            log_user_action("Код Хемминга успешно декодирован.")
+            print("Расшифрованное сообщение в Хаффмане: ", encrypted)
+
+            encrypted = encrypt(codes, encrypted)[:len(text)]  # Encrypting with Huffman
+            log_user_action("Расшифрованное сообщение успешно зашифровано с помощью Хаффмана.")
+
+            if text != encrypted:
+                print("Было найдено более 1-й ошибки!")
+                log_user_action("Было найдено более 1-й ошибки!")
+            print(f"Расшифрованное сообщение: {encrypted}")
+            log_user_action("Расшифрованное сообщение успешно выведено на экран.")
+            save_log_to_file()
+        
+
+        elif pre_choice == '2':
             print("Выход из программы.")
+            log_user_action("Программа завершила свою работу.")
+            save_log_to_file()
             sys.exit()
         else:
-            print("Некорректный выбор. Пожалуйста, выберите существующий пункт.")
+            print("Некорректный выбор. Пожалуйста, выберите действие 1 или 2.")
 
+        
 if __name__ == "__main__":
     main()
