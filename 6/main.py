@@ -31,19 +31,19 @@ def main():
             print("Код Хаффмана: ", crypted)
 
             hem = Heming()
-            crypted_hem = hem.code(crypted, True)  # Encoding with Hamming
+            crypted_hem = hem.code(crypted, True)  
             log_user_action("Текст успешно закодирован с помощью Хемминга.")
             print("Код Хемминга: ", crypted_hem)
 
-            noised = hem.noise(crypted_hem, 2)  # Introducing noise
+            noised = hem.noise(crypted_hem, 2) 
             log_user_action("Код Хемминга успешно подвергнут воздействию шума.")
             print("Код Хемминга с добавленными ошибками: ", noised)
 
-            encrypted = hem.code(noised, False)  # Decoding Hamming
+            encrypted = hem.code(noised, False)  
             log_user_action("Код Хемминга успешно декодирован.")
             print("Расшифрованное сообщение в Хаффмане: ", encrypted)
 
-            encrypted = encrypt(codes, encrypted)[:len(text)]  # Encrypting with Huffman
+            encrypted = encrypt(codes, encrypted)[:len(text)]  
             log_user_action("Расшифрованное сообщение успешно зашифровано с помощью Хаффмана.")
 
             if text != encrypted:
