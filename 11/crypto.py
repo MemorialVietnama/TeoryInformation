@@ -14,12 +14,12 @@ class Crypt:
     def processor(self, orders, results):
         while True:
             order = orders.get()
-            m, k, n = order.value  # Unpack tuple
+            m, k, n = order.value 
 
-            if order.command == 1:
-                c = ''.join(chr((160 + ord(letter) + k) % n) for letter in m)
-            elif order.command == 2:
-                c = ''.join(chr((ord(letter) - k - 160) % n) for letter in m)
+            if order.command == 1:  # Encrypt
+                c = ''.join(chr((ord(letter) + k) % n) for letter in m)
+            elif order.command == 2:  # Decrypt
+                c = ''.join(chr((ord(letter) - k) % n) for letter in m)
             else:
                 break
 
@@ -53,4 +53,4 @@ class Crypt:
         order.value = (0, 0, 0)
 
         self.orders.put(order)
-        self.thread.join()  # Wait for thread to finish
+        self.thread.join()

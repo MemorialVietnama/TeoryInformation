@@ -18,10 +18,10 @@ if __name__ == "__main__":
         if mode > 2 or mode < 1:
             continue
 
-        m = str(input("Введите текст: "))
+        m = input("Введите текст: ")
         try:
             k = int(input("Введите ключ: "))
-            n = int(input("Введите мощность: "))
+            n = int(input("Введите размер алфавита: "))
         except ValueError:
             print("\nНеверный тип данных.")
             continue

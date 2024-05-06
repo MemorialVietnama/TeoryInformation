@@ -25,6 +25,7 @@
 
     h2 {
       margin-top: 20px;
+      font-size: 20px;;
     }
     a {
       padding: 10px;
@@ -57,13 +58,14 @@
 <body>
   <div class="container">
     <h1>Кодирование Хемминга</h1>
-    <h2>Результат = {{data}}</h2>
-    <button id="copyButton">Скопировать результат</button> <!-- Добавлена кнопка -->
+    <h2>Результат</h2>
+    <h3 style="display: flex; justify-content: center; word-wrap: break-word; max-width: 80%;">{{data}}</h3>
+
+    <button id="copyButton">Скопировать результат</button> 
     <a href="/">На главную</a>
   </div>
 
   <script>
-    // Функция для копирования текста в буфер обмена
     function copyTextToClipboard(text) {
       const textField = document.createElement('textarea');
       textField.innerText = text;
@@ -73,10 +75,9 @@
       textField.remove();
     }
 
-    // Обработчик нажатия кнопки "Скопировать результат"
     document.getElementById('copyButton').addEventListener('click', function() {
-      const resultText = document.querySelector('h2').innerText; // Получаем текст результата
-      copyTextToClipboard(resultText); // Копируем текст в буфер обмена
+      const resultText = document.querySelector('h3').innerText; 
+      copyTextToClipboard(resultText); 
       alert('Результат скопирован!');
     });
   </script>
