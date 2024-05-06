@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
                     for row in respond:
                         TEXT = f"Пользователь: {row[1]},\
-                                Админ?: {bool(row[3])}"
+                                Наличие прав администратора: {bool(row[3])}"
                         print(TEXT)
                 elif user_mode == 2:
                     try:

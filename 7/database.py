@@ -3,18 +3,14 @@ import hashlib
 
 class DataBase:
     connection = None
-
     def __init__(self, database_name):
         self.connection = sqlite3.connect(database_name)
         cursor = self.connection.cursor()
-
         create_table_query = '''CREATE TABLE IF NOT EXISTS User_types (
                                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                                 utype TEXT NOT NULL UNIQUE);'''
-
         cursor.execute(create_table_query)
         self.connection.commit()
-
         create_table_query = '''CREATE TABLE IF NOT EXISTS Users (
                                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                                     login TEXT NOT NULL UNIQUE,

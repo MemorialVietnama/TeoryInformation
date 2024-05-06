@@ -3,11 +3,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import *
 from PyQt5.QtSql import *
 import os
-
-
 os.chdir("C:\\TeoryInformation\\TeoryInformation\\9\\")
-
-
 class Window(QMainWindow):
 
     model = None
